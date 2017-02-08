@@ -1,15 +1,22 @@
-const debug = require('debug')('amqp-stream');
+const debug = require('debug')('to-command-queue:amqp-stream');
 
 const amqp = require('amqp');
 const promisify = require('any-promisify');
 const amqpStream = promisify(require('amqp-stream'));
 
-module.exports = ({
+const createAmqpStream = ({
   AMQP_URL,
   AMQP_EXCHANGE,
-  AMQP_ROUTER_KEY
+  AMQP_ROUTER_KEY,
+  AMQP_QUEUE
 }) => {
   const connection = amqp.createConnection(AMQP_URL);
-  connection.on('ready', () => debug('amqp ready'));
-  return amqpStream({ connection, exchange: AMQP_EXCHANGE, routingKey: AMQP_ROUTER_KEY });
+
+  connection.on('ready', () => debug('connection ready'));
+  connection.on('error', (err) => debug(err.message));
+  connection.on('close', () => debug('connection ended'));
+
+  return amqpStream({ connection, exchange: AMQP_EXCHANGE, routingKey: AMQP_ROUTER_KEY, queue: AMQP_QUEUE });
 }
+
+module.exports = createAmqpStream;
