@@ -1,0 +1,15 @@
+{
+  "name": "stream-to-neo4j",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": {},
+  "author": "Seb Insua <me@sebinsua.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cypher-stream": "^1.0.1",
+    "debug": "^2.6.0",
+    "stream-from-array": "^1.0.0",
+    "tap-stream": "^0.2.0",
+    "through2-map": "^3.0.0"
+  }
+}
