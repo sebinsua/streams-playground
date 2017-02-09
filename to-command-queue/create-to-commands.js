@@ -9,12 +9,10 @@ const identity = v => v;
 const toCommand = (type, toPayload = identity) =>
   map.obj(line => ({ type: 'command', command: type, payload: toPayload(line) }));
 
-const toUsername = line => ({ username: line });
+const createToCommands = (type, toPayload = identity) => input =>
+    input
+      .pipe(toLine)
+      .pipe(isNonEmptyLine)
+      .pipe(toCommand(type, toPayload));
 
-const toCommands = _input =>
-  _input
-    .pipe(toLine)
-    .pipe(isNonEmptyLine)
-    .pipe(toCommand('timeline', toUsername));
-
-module.exports = toCommands;
+module.exports = createToCommands;

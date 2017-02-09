@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const toCommands = require('./to-commands');
+const createToCommands = require('./create-to-commands');
 const { stringify } = require('JSONStream');
 const debug = require('debug')('to-command-queue:client');
 const tap = require('tap-stream');
@@ -13,6 +13,9 @@ const toErrorLog = console.error.bind(console);
 
 const input = process.stdin;
 input.on('end', () => process.exit(0));
+
+const toUsername = line => ({ username: line });
+const toCommands = createToCommands('profile', toUsername);
 
 createAmqpStream(config)
   .then(rpc =>

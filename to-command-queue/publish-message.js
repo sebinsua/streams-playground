@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const { connect } = require('amqplib');
 const { createPublish, waitBeforeClosing } = require('./publish');
 
