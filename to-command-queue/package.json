@@ -18,6 +18,7 @@
     "split": "^1.0.0",
     "tap-stream": "^0.2.0",
     "through2-filter": "^2.0.0",
-    "through2-map": "^3.0.0"
+    "through2-map": "^3.0.0",
+    "yargs": "^6.6.0"
   }
 }

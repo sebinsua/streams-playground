@@ -30,17 +30,15 @@ class ProfileStream extends Readable {
 
 }
 
-const DEFAULT_COUNT = 10;
-
 const streams = {
   timeline: {
     class: TimelineStream,
-    toArgs: (payload) => [ payload.username, { count: payload.count || DEFAULT_COUNT } ],
+    toArgs: (payload) => [ payload.username, { count: payload.count } ],
     type: 'tweet'
   },
   likes: {
     class: LikeStream,
-    toArgs: (payload) => [ payload.username, { count: payload.count || DEFAULT_COUNT, env: process.env } ],
+    toArgs: (payload) => [ payload.username, { count: payload.count, env: process.env } ],
     type: 'tweet'
   },
   followers: {
@@ -55,17 +53,17 @@ const streams = {
   },
   conversation: {
     class: ConversationStream,
-    toArgs: (payload) => [ payload.username, payload.id, { count: payload.count || DEFAULT_COUNT } ],
+    toArgs: (payload) => [ payload.username, payload.id, { count: payload.count } ],
     type: 'tweet'
   },
   search: {
     class: TweetStream,
-    toArgs: (payload) => [ payload.query, payload.type || 'top', { count: payload.count || DEFAULT_COUNT } ],
+    toArgs: (payload) => [ payload.query, payload.type || 'top', { count: payload.count } ],
     type: 'tweet'
   },
   list: {
     class: ListStream,
-    toArgs: (payload) => [ payload.username, payload.listName || 'list', { count: payload.count || DEFAULT_COUNT } ],
+    toArgs: (payload) => [ payload.username, payload.listName || 'list', { count: payload.count } ],
     type: 'tweet'
   },
   profile: {
