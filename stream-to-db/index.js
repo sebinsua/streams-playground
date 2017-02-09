@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const streamFromArray = require('stream-from-array');
 const createStreamToDatabase = require('./create-stream-to-database');
-const config = require('./config');
+const { NEO4J_URL, NEO4J_USERNAME, NEO4J_PASSWORD } = require('./config');
 
 const always = value => () => value;
 
@@ -21,16 +21,17 @@ const peopleStream = streamFromArray.obj([
 ]);
 
 const toPersonNode = personName => ({
-  statement: 'MERGE (p:Person { name: {personName} })',
-  parameters: { personName }
+  statement: `MERGE (p:Person { name: {personName} }) SET p += $props`,
+  parameters: { personName, props: { type: 'friends and family', location: 'the world' } }
 });
 
-// TODO: disable toExit.
-// TODO: add a _context/_command to the to-command-queue.
-// TODO: Alter the query to be able to add properties to a pre-existing Node. Make this generic.
 // TODO: Alter the query to be able to add a relationship, too. Makes this generic.
 // TODO: Return multiple statements from `toPersonNode` (which should also be renamed.)
 
-const streamToDatabase = createStreamToDatabase(config, { person: toPersonNode }, always('person'));
+const streamToDatabase = createStreamToDatabase(
+  { url: NEO4J_URL, username: NEO4J_USERNAME, password: NEO4J_PASSWORD, exitOnCommit: true },
+  { person: toPersonNode },
+  always('person')
+);
 
 streamToDatabase(peopleStream)
