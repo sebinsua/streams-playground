@@ -23,10 +23,11 @@ function messageToType(streams = {}, message) {
 const emitFromStream = streams => through.obj(function (message, encoding, callback) {
   const cb = once(callback);
 
+  const _context = Object.assign({}, message);
   const type = messageToType(streams, message);
   const stream = messageToStream(streams, message);
 
-  stream.on('data', data => this.push({ type, data }));
+  stream.on('data', data => this.push({ type, data, _context }));
   stream.on('close', () => cb());
   stream.on('end', () => cb());
   stream.on('error', (err) => cb(err));
